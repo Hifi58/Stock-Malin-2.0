@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+
+{% block body %}
+    <div class="titre">
+        <h1 class="bigtitle">Ajouter un nouveau produit</h1>
+        <button class="logout"><a class="linkcrud" href="{{ path('app_logout')}}">Déconnexion</a></button>
+    </div>
+
+    {{ include('crud/_form.html.twig') }}
+
+    <a href="{{ path('crud_index') }}">back to list</a>
+{% endblock %}

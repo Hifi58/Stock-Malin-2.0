@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+<div class="titre">
+    <h1 class="bigtitle">Historique des achats</h1>
+    <button class="logout"><a class="linkcrud" href="{{ path('app_logout')}}">Déconnexion</a></button>
+</div>
+
+    <table class="table">
+        <thead>
+            <tr class="list">
+                <th>Id</th>
+                <th>Name</th>
+                <th>Place</th>
+                <th>Reference</th>
+                <th>Buying_date</th>
+                <th>End_sav</th>
+                <th>Price</th>
+                <th>Utilisation_tips</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.Name }}</td>
+                <td>{{ product.place }}</td>
+                <td>{{ product.reference }}</td>
+                <td>{{ product.buyingDate ? product.buyingDate|date('Y-m-d') : '' }}</td>
+                <td>{{ product.endSav ? product.endSav|date('Y-m-d') : '' }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.utilisationTips }}</td>
+                <td>
+                    <button class="buttonshow"><a class="linkcrud" href="{{ path('crud_show', {'id': product.id}) }}">Voir</a></button>
+                    <button class="buttonedit"><a class="linkcrud" href="{{ path('crud_edit', {'id': product.id}) }}">Modifier</a></button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <button class="buttonnew"><a class="linknew" href="{{ path('crud_new') }}">Create new</a></button>
+{% endblock %}

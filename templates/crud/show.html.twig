@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produits{% endblock %}
+
+{% block body %}
+<div class="titre">
+    <h1 class="bigtitle">Produits</h1>
+    <button class="logout"><a class="linkcrud" href="{{ path('app_logout')}}">Déconnexion</a></button>
+</div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ product.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ product.Name }}</td>
+            </tr>
+            <tr>
+                <th>Place</th>
+                <td>{{ product.place }}</td>
+            </tr>
+            <tr>
+                <th>Reference</th>
+                <td>{{ product.reference }}</td>
+            </tr>
+            <tr>
+                <th>Buying_date</th>
+                <td>{{ product.buyingDate ? product.buyingDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>End_sav</th>
+                <td>{{ product.endSav ? product.endSav|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ product.price }}</td>
+            </tr>
+            <tr>
+                <th>Utilisation_tips</th>
+                <td>{{ product.utilisationTips }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="buttonedit"><a class="linkcrud" href="{{ path('crud_edit', {'id': product.id}) }}">edit</a></button>
+    {{ include('crud/_delete_form.html.twig') }}
+    <a class="linkback" href="{{ path('crud_index') }}">&#10094; Retour à l'historique</a>
+
+
+{% endblock %}

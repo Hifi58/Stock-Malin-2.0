@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block body %}
+<div class="titre">
+    <h1 class="bigtitle">Modification du produit</h1>
+    <button class="logout"><a class="linkcrud" href="{{ path('app_logout')}}">Déconnexion</a></button>
+</div>
+
+    {{ include('crud/_form.html.twig', {'button_label': 'Update'}) }}
+
+    {{ include('crud/_delete_form.html.twig') }}
+    <a class="linkback" href="{{ path('crud_index') }}">&#10094; Retour à l'historique</a>
+{% endblock %}
+
