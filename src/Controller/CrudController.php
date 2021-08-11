@@ -68,7 +68,7 @@ class CrudController extends AbstractController
 
                 // stocke en bdd (nom)
                 $doc = new Files();
-                $doc->setName($fichier);
+                $doc->setName($manual);
                 $product->addFile($doc);
             }
 
