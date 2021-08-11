@@ -1,9 +1,9 @@
 {{ form_start(form) }}
+<div class="container">
     {{ form_widget(form) }}
 
     {# Vérifier si la route est "crud_edit" on affiche les images #}
     {% if app.request.attributes.get('_route') == 'crud_edit' %}
-        <h2>Images</h2>
         {% for image in product.images %}
             <div>
                 <img src="{{ asset('/uploads/' ~ image.name)}}" alt="Image" width="150">
@@ -11,7 +11,15 @@
                 Supprimer</a>
             </div>
         {% endfor %}
-    {% endif %}
-    
+       {% for file in product.files %}
+            <div>
+                <iframe frameborder="0" width="100%" height="500" src="{{ asset('/files/' ~ file.name)}}" ></iframe>
+                <a href="{{ path('product_delete_file', {'id': file.id})}}" data-delete data-token="{{csrf_token('delete' ~ file.id)}}">
+                Supprimer</a>
+            </div>
+        {% endfor %}
+    {% endif %} 
+
+</div>    
     <button class="buttonnew">{{ button_label|default('Ajouter') }}</button>
 {{ form_end(form) }}

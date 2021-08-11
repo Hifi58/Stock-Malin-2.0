@@ -42,10 +42,24 @@
                 <th>Utilisation_tips</th>
                 <td>{{ product.utilisationTips }}</td>
             </tr>
+            <tr>
+            {% for image in product.images %}
+                <th>Photo tickets</th>
+                <td><img class="imgview" src="{{ asset('/uploads/' ~ image.name)}}" alt="Image" width="150"></td>
+
+                
+            {% endfor %}
+            </tr>
+            <tr>
+            {% for file in product.files %}
+            <th>Manual</th>
+                <td><iframe frameborder="0" width="100%" height="450" src="{{ asset('/files/' ~ file.name)}}" ></iframe></td>
+             {% endfor %}
+             </tr>
         </tbody>
     </table>
 
-    <button class="buttonedit"><a class="linkcrud" href="{{ path('crud_edit', {'id': product.id}) }}">edit</a></button>
+    <button class="buttonedit"><a class="linkcrud" href="{{ path('crud_edit', {'id': product.id}) }}">Modifier</a></button>
     {{ include('crud/_delete_form.html.twig') }}
     <a class="linkback" href="{{ path('crud_index') }}">&#10094; Retour à l'historique</a>
 

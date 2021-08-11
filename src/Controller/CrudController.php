@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\Images;
+use App\Entity\Files;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,10 +37,10 @@ class CrudController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // récupération des images
+            // récupération des images et des manuels
             $images = $form->get('images')->getData();
-
-            // On boucle au cas où il y ait plusieurs images
+            $files = $form->get('files')->getData();
+            // On boucle au cas où il y ait plusieurs images ou manuels
             foreach($images as $image){
                 //nouveau nom de fichier pour éviter les doublons
                 $fichier = md5(uniqid()). '.' . $image->guessExtension();
@@ -54,6 +55,21 @@ class CrudController extends AbstractController
                 $img = new Images();
                 $img->setName($fichier);
                 $product->addImage($img);
+            }
+            foreach($files as $file){
+                //nouveau nom de fichier pour éviter les doublons
+                $manual = md5(uniqid()). '.' . $file->guessExtension();
+
+                // copie du fichier vers uploads
+                $file->move(
+                    $this->getParameter('files_directory'),
+                    $manual
+                );
+
+                // stocke en bdd (nom)
+                $doc = new Files();
+                $doc->setName($fichier);
+                $product->addFile($doc);
             }
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -91,7 +107,7 @@ class CrudController extends AbstractController
 
         // récupération des images
         $images = $form->get('images')->getData();
-
+        $files = $form->get('files')->getData();
         // On boucle au cas où il y ait plusieurs images
         foreach($images as $image){
             //nouveau nom de fichier pour éviter les doublons
@@ -107,6 +123,22 @@ class CrudController extends AbstractController
             $img = new Images();
             $img->setName($fichier);
             $product->addImage($img);
+        }
+
+        foreach($files as $file){
+            //nouveau nom de fichier pour éviter les doublons
+            $manual = md5(uniqid()). '.' . $file->guessExtension();
+
+            // copie du fichier vers uploads
+            $file->move(
+                $this->getParameter('files_directory'),
+                $manual
+            );
+
+            // stocke en bdd (nom)
+            $doc = new Files();
+            $doc->setName($manual);
+            $product->addFile($doc);
         }
 
             $this->getDoctrine()->getManager()->flush();
@@ -158,4 +190,32 @@ class CrudController extends AbstractController
             return new JsonResponse(['Erreur' => 'Token Invalide'], 400);
         }
     }
+
+    /**
+     * @Route("/supprime/file/{id}", name="product_delete_file", methods={"DELETE"})
+     */
+
+    public function deleteFile(Files $file, Request $request){
+        $data = json_decode($request->getContent(), true);
+        
+        // Validité du token
+        if($this->isCsrfTokenValid('delete'.$file->getId(), $data['_token'])){
+            //recupération nom
+            $nom = $file->getName();
+            //suppression
+            unlink($this->getParameter('files_directory').'/'.$nom);
+
+            // suppression de la bdd
+            $em =$this->getDoctrine()->getManager();
+            $em->remove($file);
+            $em->flush();
+
+            //reponse en json_decode
+            return new JsonResponse(['Suppression effectuée' => 1]);
+        }else{
+            return new JsonResponse(['Erreur' => 'Token Invalide'], 400);
+        }
+    }
 }
+
+

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Historique{% endblock %}
 
 {% block body %}
 <div class="titre">
@@ -25,14 +25,13 @@
         <tbody>
         {% for product in products %}
             <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.Name }}</td>
-                <td>{{ product.place }}</td>
-                <td>{{ product.reference }}</td>
-                <td>{{ product.buyingDate ? product.buyingDate|date('Y-m-d') : '' }}</td>
-                <td>{{ product.endSav ? product.endSav|date('Y-m-d') : '' }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.utilisationTips }}</td>
+                <td class="field">{{ product.Name }}</td>
+                <td class="field">{{ product.place }}</td>
+                <td class="field">{{ product.reference }}</td>
+                <td class="field">{{ product.buyingDate ? product.buyingDate|date('Y-m-d') : '' }}</td>
+                <td class="field">{{ product.endSav ? product.endSav|date('Y-m-d') : '' }}</td>
+                <td class="field">{{ product.price }} €</td>
+                <td class="field">{{ product.utilisationTips }}</td>
                 <td>
                     <button class="buttonshow"><a class="linkcrud" href="{{ path('crud_show', {'id': product.id}) }}">Voir</a></button>
                     <button class="buttonedit"><a class="linkcrud" href="{{ path('crud_edit', {'id': product.id}) }}">Modifier</a></button>
@@ -46,5 +45,5 @@
         </tbody>
     </table>
 
-    <button class="buttonnew"><a class="linknew" href="{{ path('crud_new') }}">Create new</a></button>
+    <button class="buttonnew"><a class="linknew" href="{{ path('crud_new') }}">Ajouter</a></button>
 {% endblock %}

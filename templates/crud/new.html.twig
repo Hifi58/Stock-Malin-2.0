@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Product{% endblock %}
+{% block title %}Ajouter{% endblock %}
 
 {% block body %}
     <div class="titre">
@@ -10,5 +10,5 @@
 
     {{ include('crud/_form.html.twig') }}
 
-    <a href="{{ path('crud_index') }}">back to list</a>
+    <a class="linkback" href="{{ path('crud_index') }}">&#10094; Retour à l'historique</a>
 {% endblock %}

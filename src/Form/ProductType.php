@@ -21,7 +21,13 @@ class ProductType extends AbstractType
             ->add('price')
             ->add('utilisation_tips')
             ->add('images', FileType::class, [
-                'label' => false,
+                'label' => 'Images',
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false
+            ])
+            ->add('files', FileType::class, [
+                'label' => 'Manuel',
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false
