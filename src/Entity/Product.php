@@ -64,6 +64,12 @@ class Product
      */
     private $files;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $categories;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -215,6 +221,18 @@ class Product
                 $file->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategories(): ?Category
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(?Category $categories): self
+    {
+        $this->categories = $categories;
 
         return $this;
     }
