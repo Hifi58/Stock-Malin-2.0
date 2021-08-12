@@ -1,9 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Georama:wght@500&display=swap');
 
 :root{
-    --font_title:'Georama', sans-serif;
-    --containers: hsl(159, 46,72);
-    
+    --font_title:'Georama', sans-serif;  
 }
 
 *{
@@ -282,6 +280,30 @@ tr{
 
 .linkback:hover{
     animation: back 700ms ease 0s 1 normal forwards;
+}
+
+.inputnew{
+    background-color: #27709b;
+    color: rgb(243, 240, 240);
+    font-family: var(--font_title);
+    border: none;
+    border-bottom: 1px solid rgb(243, 240, 240);
+    font-size: 1.2em;
+}
+
+.inputnew:focus{
+    outline: none;
+}
+
+label{
+    font-family: var(--font_title);
+    color: rgb(243, 240, 240);
+}
+
+.container div{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 @keyframes back {
