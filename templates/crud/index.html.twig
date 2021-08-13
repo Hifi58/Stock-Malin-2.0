@@ -7,9 +7,14 @@
     <h1 class="bigtitle">Historique des achats</h1>
     <button class="logout"><a class="linkcrud" href="{{ path('app_logout')}}">Déconnexion</a></button>
 </div>
+
     
+
     <table class="table">
+    
         <thead>
+        
+        
             <tr class="list">
                 <th>Id</th>
                 <th>Name</th>
@@ -23,6 +28,17 @@
             </tr>
         </thead>
         <tbody>
+        <div class="filter">
+        <form  id="filters">
+            {# {% for categorie in categories %}
+            <div class="formfilter">
+                <p><input type="checkbox" name="categories[]" id="cat{{categorie.id}}" value="{{categorie.id}}"></p>
+                <label class="filterlabel" for="cat{{categorie.id}}">{{categorie.name}}</label>
+            </div>
+            {% endfor %} #}
+            <input type="hidden" name="page" value="4">
+        </form>
+    </div>
         {% for product in products %}
             <tr>
                 <td class="field">{{ product.Name }}</td>
@@ -44,6 +60,12 @@
         {% endfor %}
         </tbody>
     </table>
-
+    <ul class="pagination">
+        {% for item in 1..((total / limit)|round(0, 'ceil')) %}
+            <li>
+                <a href="?page={{item}}">{{item}}</a>
+            <li>
+        {% endfor %}
+    </ul>
     <button class="buttonnew"><a class="linknew" href="{{ path('crud_new') }}">Ajouter</a></button>
 {% endblock %}

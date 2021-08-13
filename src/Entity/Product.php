@@ -70,6 +70,10 @@ class Product
      */
     private $categories;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+
     public function __construct()
     {
         $this->images = new ArrayCollection();

@@ -7,6 +7,7 @@ use App\Entity\Images;
 use App\Entity\Files;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +22,27 @@ class CrudController extends AbstractController
     /**
      * @Route("/", name="crud_index", methods={"GET"})
      */
-    public function index(ProductRepository $productRepository): Response
+    public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request ): Response
     {
-        return $this->render('crud/index.html.twig', [
-            'products' => $productRepository->findAll(),
-        ]);
+    // Récuperation numéro de page et le nombre par page
+    $limit = 4;
+    $page = (int)$request->query->get("page", 1);
+
+    // Récuperation des filtres
+    $filters = $request->get("categories");
+
+    //Récuperation des produits de la page
+    $products = $productRepository->getPaginatedAnnonces($page, $limit, $filters);
+    
+    // Récuperation du nombre total de produits
+    $total = $productRepository->getTotalAnnonces();
+
+    // Verification de la présence d'une requête Ajax 
+        if($request->get('ajax')){
+            return "Ok";
+        }
+
+        return $this->render('crud/index.html.twig', compact('products', 'total', 'limit'));
     }
 
     /**

@@ -47,4 +47,33 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * Returns all Products per page
+     * @param mixed $page
+     * @param mixed $limit
+     * @return void
+     */
+    public function getPaginatedAnnonces($page, $limit, $filters){
+        $query = $this->createQueryBuilder('product');
+            
+        if($filters != null){
+            $query->where('product.categories IN(:cats)')
+                  ->setParameter(':cats', array_values($filters));
+        }
+            $query->orderBy('product.buying_date')
+            ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit);
+            return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Returns number of Annonces
+     * @return void
+     */
+    public function getTotalAnnonces(){
+        $query = $this->createQueryBuilder('product')
+            ->select('COUNT(product)');
+        return $query->getQuery()->getSingleScalarResult();
+    }
 }
