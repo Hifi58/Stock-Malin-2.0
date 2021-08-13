@@ -1,6 +1,6 @@
 const FiltersForm = document.querySelector("#filters");
 
-    document.querySelectorAll("#filters input").forEach(input => {
+    document.querySelectorAll("input").forEach(input => {
         input.addEventListener("change", () =>{
             // Récupération données du formulaire
             const Form = new FormData(FiltersForm);
@@ -20,8 +20,12 @@ const FiltersForm = document.querySelector("#filters");
                 headers: {
                     "X-Requested-With": "XMLHttpRequest"
                 }
-            }).then(response => {
-                console.log(response)
+            }).then( response => response.json()
+            ).then(data => {
+                console.log(data)
+                const content = document.querySelector("#content");
+                content.innerHTML = data.content;
+                history.pushState({}, null, Url.pathname + "?" + Params.toString())
             }).catch(e => alert(e));
         });
     });

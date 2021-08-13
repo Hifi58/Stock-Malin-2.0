@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% set queryParams = app.request.query.all %}
+{# {% set queryString = queryParams|fitler((v, k) => != page) %} #}
+
 {% block title %}Historique{% endblock %}
 
 {% block body %}
@@ -8,64 +11,27 @@
     <button class="logout"><a class="linkcrud" href="{{ path('app_logout')}}">Déconnexion</a></button>
 </div>
 
-    
+  
+       
+        {# Boucle pour récupérer les catégories #}
+<div class="filter">
+    <form class="filter" id="filters">
+        {% for categorie in categories %} 
+        <div class="formfilter">
+                    <p><input type="checkbox" name="categories[]" id="cat{{categorie.id}}" value="{{categorie.id}}"></p>
+                    <label class="filterlabel" for="cat{{categorie.id}}">{{categorie.name}}</label> 
+        </div>
+        {% endfor %}
+        <input type="hidden" name="page" value="{{page}}">
+    </form>
+ </div>           
 
-    <table class="table">
-    
-        <thead>
-        
-        
-            <tr class="list">
-                <th>Id</th>
-                <th>Name</th>
-                <th>Place</th>
-                <th>Reference</th>
-                <th>Buying_date</th>
-                <th>End_sav</th>
-                <th>Price</th>
-                <th>Utilisation_tips</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        <div class="filter">
-        <form  id="filters">
-            {# {% for categorie in categories %}
-            <div class="formfilter">
-                <p><input type="checkbox" name="categories[]" id="cat{{categorie.id}}" value="{{categorie.id}}"></p>
-                <label class="filterlabel" for="cat{{categorie.id}}">{{categorie.name}}</label>
-            </div>
-            {% endfor %} #}
-            <input type="hidden" name="page" value="4">
-        </form>
+        {# Boucle pour récupérer les produits #}
+    <div id="content">
+        {% include "crud/_content.html.twig" %}
     </div>
-        {% for product in products %}
-            <tr>
-                <td class="field">{{ product.Name }}</td>
-                <td class="field">{{ product.place }}</td>
-                <td class="field">{{ product.reference }}</td>
-                <td class="field">{{ product.buyingDate ? product.buyingDate|date('Y-m-d') : '' }}</td>
-                <td class="field">{{ product.endSav ? product.endSav|date('Y-m-d') : '' }}</td>
-                <td class="field">{{ product.price }} €</td>
-                <td class="field">{{ product.utilisationTips }}</td>
-                <td>
-                    <button class="buttonshow"><a class="linkcrud" href="{{ path('crud_show', {'id': product.id}) }}">Voir</a></button>
-                    <button class="buttonedit"><a class="linkcrud" href="{{ path('crud_edit', {'id': product.id}) }}">Modifier</a></button>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <ul class="pagination">
-        {% for item in 1..((total / limit)|round(0, 'ceil')) %}
-            <li>
-                <a href="?page={{item}}">{{item}}</a>
-            <li>
-        {% endfor %}
-    </ul>
-    <button class="buttonnew"><a class="linknew" href="{{ path('crud_new') }}">Ajouter</a></button>
 {% endblock %}
+
+ {% block javascript %}
+            <script src="{{ asset('js/filters.js')}}"></script>
+ {% endblock %}

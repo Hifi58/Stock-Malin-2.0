@@ -54,14 +54,14 @@ class ProductRepository extends ServiceEntityRepository
      * @param mixed $limit
      * @return void
      */
-    public function getPaginatedAnnonces($page, $limit, $filters){
-        $query = $this->createQueryBuilder('product');
+    public function getPaginatedAnnonces($page, $limit, $filters = null){
+        $query = $this->createQueryBuilder('p');
             
         if($filters != null){
-            $query->where('product.categories IN(:cats)')
+            $query->where('p.categories IN(:cats)')
                   ->setParameter(':cats', array_values($filters));
         }
-            $query->orderBy('product.buying_date')
+            $query->orderBy('p.buying_date')
             ->setFirstResult(($page * $limit) - $limit)
             ->setMaxResults($limit);
             return $query->getQuery()->getResult();
@@ -71,9 +71,14 @@ class ProductRepository extends ServiceEntityRepository
      * Returns number of Annonces
      * @return void
      */
-    public function getTotalAnnonces(){
-        $query = $this->createQueryBuilder('product')
-            ->select('COUNT(product)');
+    public function getTotalAnnonces($filters = null){
+        $query = $this->createQueryBuilder('p')
+            ->select('COUNT(p)');
+            if($filters != null){
+                $query->where('p.categories IN(:cats)')
+                      ->setParameter(':cats', array_values($filters));
+            }
+
         return $query->getQuery()->getSingleScalarResult();
     }
 }

@@ -24,25 +24,32 @@ class CrudController extends AbstractController
      */
     public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request ): Response
     {
-    // Récuperation numéro de page et le nombre par page
+    // Définition du nombre par page
     $limit = 4;
+
+    // Récuperation numéro de page
     $page = (int)$request->query->get("page", 1);
 
     // Récuperation des filtres
     $filters = $request->get("categories");
-
+        
     //Récuperation des produits de la page
     $products = $productRepository->getPaginatedAnnonces($page, $limit, $filters);
-    
+     
     // Récuperation du nombre total de produits
-    $total = $productRepository->getTotalAnnonces();
+    $total = $productRepository->getTotalAnnonces($filters);
+
+    // Récuperation des catégories
+    $categories = $categoryRepository->findAll();
 
     // Verification de la présence d'une requête Ajax 
         if($request->get('ajax')){
-            return "Ok";
+            return new JsonResponse([
+                'content' => $this->render('crud/_content.html.twig', compact('products', 'total', 'limit','page'))
+            ]);
         }
 
-        return $this->render('crud/index.html.twig', compact('products', 'total', 'limit'));
+        return $this->render('crud/index.html.twig', compact('products', 'total', 'limit','page', 'categories'));
     }
 
     /**

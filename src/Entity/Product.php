@@ -45,7 +45,7 @@ class Product
     private $end_sav;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=0)
+     * @ORM\Column(type="decimal")
      */
     private $price;
 
@@ -70,9 +70,6 @@ class Product
      */
     private $categories;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
 
     public function __construct()
     {

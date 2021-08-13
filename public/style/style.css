@@ -132,6 +132,7 @@ body{
     box-shadow: 0 8px rgb(165, 165, 165);
     padding: 2rem;
     line-height: 2;
+    margin-bottom: 50px;
 }
 
 thead{
@@ -215,6 +216,7 @@ tr{
     font-family: var(--font_title);
     margin: auto;
     margin-top: 30px;
+    margin-bottom: 50px;
     border-radius: 5px;
     background-color: rgb(243, 240, 240);
     border: none;
@@ -307,6 +309,10 @@ label{
     flex-direction: column;
 }
 
+#content{
+    display: flex;
+    flex-direction: column;
+}
 @keyframes back {
     0% {
       transform: translateX(0);
